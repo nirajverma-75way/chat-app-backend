@@ -1,0 +1,32 @@
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    online: Boolean!
+  }
+
+  type Message {
+    id: ID!
+    senderId: ID!
+    receiverId: ID!
+    content: String
+    mediaUrl: String
+    status: Status
+    read: Boolean!
+    timestamp: String
+  }
+
+type Query {
+  getUserById(id: ID!): User
+  getMessages(senderId: ID!, receiverId: ID!): [Message!]
+}
+
+type Mutation {
+  createUser(name: String!, email: String!, password: String!): User!
+  sendMessage(senderId: ID!, receiverId: ID!, content: String!): Message!
+}
+
+type Subscription {
+  newMessage: Message!
+  userOnlineStatus: User!
+}
