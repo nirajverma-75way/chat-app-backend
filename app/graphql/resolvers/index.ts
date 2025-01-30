@@ -43,9 +43,10 @@ export const resolvers = {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) throw new Error('Invalid credentials');
       const { accessToken, refreshToken } = createUserTokens(user);
+      user.refreshToken = refreshToken;
       await prisma.user.update({
         where: { id: user.id },
-         refreshToken,
+        data: {refreshToken: refreshToken},
       })
       return {
         accessToken,
