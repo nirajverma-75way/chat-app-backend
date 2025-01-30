@@ -6,6 +6,7 @@ export const typeDefs = gql`
     name: String!
     email: String!
     online: Boolean!
+    refreshToken: String
   }
 
   type Message {
@@ -19,6 +20,13 @@ export const typeDefs = gql`
     timestamp: String
   }
 
+  type AuthParam{
+    accessToken: String!
+    refreshToken: String! 
+    user: User!
+  }
+
+
   enum Status {
     UNDELIVERED
     DELIVERED
@@ -27,6 +35,7 @@ export const typeDefs = gql`
   type Query {
     getUsers: [User]
     getUserById(id: ID!): User
+    login(email: String!, password: String! ): AuthParam!
     getMessages(senderId: ID!, receiverId: ID!): [Message]
   }
 

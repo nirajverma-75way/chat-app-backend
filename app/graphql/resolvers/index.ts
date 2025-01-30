@@ -1,6 +1,7 @@
 import { prisma } from '../prismaClient';
 import { PubSub } from 'graphql-subscriptions';
 import bcrypt from 'bcrypt';
+import { createUserTokens } from '../../common/services/passport-jwt.service';
 
 const pubsub = new PubSub();
 
@@ -42,7 +43,10 @@ export const resolvers = {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) throw new Error('Invalid credentials');
       const { accessToken, refreshToken } = createUserTokens(user);
-      await userService.editUser(user._id, { refToken: refreshToken });
+      await prisma.user.update({
+        where: { id: user.id },
+         refreshToken,
+      })
       return {
         accessToken,
         refreshToken,
